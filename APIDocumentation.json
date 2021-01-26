@@ -1,0 +1,263 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "description": "",
+      "version": "2",
+      "title": "BLCKIMP"
+    },
+    "paths": {
+      "/fetchblockchain/{email}": {
+        "get": {
+          "description": "retrieve the blockchain saved by user in DB",
+          "parameters": [
+            {
+              "name": "email",
+              "in": "path",
+              "description": "email of the authenticated user",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully returned a list of artists",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/inline_response_200"
+                }
+              }
+            },
+            "400": {
+              "description": "If the user isn't authenticated",
+              "schema": {
+                "$ref": "#/definitions/inline_response_400"
+              }
+            }
+          }
+        }
+      },
+      "/reset/${email}": {
+        "delete": {
+          "description": "reset the blockchain and return genesis block",
+          "parameters": [
+            {
+              "name": "email",
+              "in": "path",
+              "description": "email of the authenticated user",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "returns genesis block",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/inline_response_200_1"
+                }
+              }
+            },
+            "400": {
+              "description": "If the user isn't available in the database",
+              "schema": {
+                "$ref": "#/definitions/inline_response_400"
+              }
+            }
+          }
+        }
+      },
+      "/authenticate": {
+        "post": {
+          "description": "verify whether the user password and email are authentic",
+          "parameters": [
+            {
+              "name": "email",
+              "in": "query",
+              "description": "Email of the user",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "password",
+              "in": "query",
+              "description": "password of the user",
+              "required": false,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Password Hash matched with the hash stored in the database",
+              "schema": {
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Either pasword or email is missing or user not registered",
+              "schema": {
+                "properties": {
+                  "error": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/signup": {
+        "post": {
+          "description": "save the user in the DB if user doesn't already exists",
+          "parameters": [
+            {
+              "name": "email",
+              "in": "query",
+              "description": "Email of the user",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "name",
+              "in": "query",
+              "description": "name of the user",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "password",
+              "in": "query",
+              "description": "password of the user",
+              "required": false,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User authentication successful",
+              "schema": {
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "User already exists",
+              "schema": {
+                "properties": {
+                  "error": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/blockchain": {
+        "post": {
+          "description": "save changes made to blockchain in DB",
+          "parameters": [
+            {
+              "name": "email",
+              "in": "query",
+              "description": "Email of the user",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "blockchain",
+              "in": "query",
+              "description": "password of the user",
+              "required": false,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Changes made successfully",
+              "schema": {
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Failed to make changes to blockchain",
+              "schema": {
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  },
+                  "error": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "inline_response_200_1": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/definitions/inline_response_200"
+          }
+        }
+      },
+      "inline_response_200": {
+        "type": "object",
+        "properties": {
+          "nonce": {
+            "type": "integer"
+          },
+          "previousHash": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "data": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "hash": {
+            "type": "string"
+          }
+        }
+      },
+      "inline_response_400": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
