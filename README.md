@@ -50,7 +50,7 @@ Building docker image
 Once done, run the Docker image In this example, port will be 5000 
 
 ```sh
-docker run -d -${imagename}
+docker run -p 5000:5000 -e PORT=5000 blockchainimp
 ```
 Verify the deployment by navigating to your server address in your preferred browser.
 
@@ -59,11 +59,7 @@ Verify the deployment by navigating to your server address in your preferred bro
 ```
 ### Heroku Deployment via container registery
 
-Log in to Container Registry:
 
-```sh
-127.0.0.1:5000
-```
 create new app in Heroku
 ```sh
 heroku create
