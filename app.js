@@ -4,7 +4,6 @@ var path = require('path');
 var cors=require('cors')
 var connect=require('./connect');
 var indexRouter=require('./routes/index')
-var path=require('path')
 
 var app = express();
 app.use(cors())
@@ -12,8 +11,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-
 app.use('/', indexRouter);
+
+// for routes '/' '/login' '/blockchain' '/signup'
+app.get('/*',(req,res)=>{
+  res.sendFile(path.join(__dirname, '/client/build','index.html'));
+})
 
 
 // catch 404 and forward to error handler

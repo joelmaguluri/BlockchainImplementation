@@ -43,6 +43,7 @@ const Login = () => {
     //retrieve data from form
     const email = e.target["email"].value;
     const password = e.target["password"].value;
+
     //verifying if the user is present in the DB
     const response = await authenticateUser(email, password);
     /* If user is present then retrive the blockchain of the user

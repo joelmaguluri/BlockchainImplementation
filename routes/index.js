@@ -42,50 +42,6 @@ const isValidHashDifficulty = (hash) => {
 };
 
 
-// PATH CONFIGURATION TO RESPOND TO A REQUEST TO STATIC ROUTE REQUEST BY SERVING index.html
-router.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-});
-
-router.get('/login', function (req, res) {
-  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-});
-
-
-router.get('/signup', function (req, res) {
-  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-});
-
-
-router.get('/blockchain', function (req, res) {
-  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-});
-
-
-//reset blockchain
-router.delete('/reset/:email',(req,res)=>{
-  const{email}=req.params;
-  User.findOne({ email: email }).then(async(doc)=>{
-      if(doc)
-      {
-        const { previousHash, timestamp, data,nonce } = genesisblock;
-        const index=0;
-        genesisblock={...genesisblock,...calculateHashAndNonce({index,previousHash,timestamp,data,nonce})};
-        let blockchain_id=doc.blockchain;
-        res.status(200).json({
-          data:[genesisblock]
-        });
-        await Blockchain.updateOne( {_id:blockchain_id},
-        { $set: { blockchain: [genesisblock] } })
-      }
-      else
-      {
-        res.status(400).json({
-          message:'user not found',
-        });
-      }
-  })
-})
 
 //fetch blockchain
 router.get('/fetchblockchain/:email',(req,res)=>{
@@ -113,10 +69,41 @@ router.get('/fetchblockchain/:email',(req,res)=>{
   })
 })
 
+
+
+
+
+
+//reset blockchain
+router.delete('/reset/:email',(req,res)=>{
+  const{email}=req.params;
+  User.findOne({ email: email }).then(async(doc)=>{
+      if(doc)
+      {
+        const { previousHash, timestamp, data,nonce } = genesisblock;
+        const index=0;
+        genesisblock={...genesisblock,...calculateHashAndNonce({index,previousHash,timestamp,data,nonce})};
+        let blockchain_id=doc.blockchain;
+        res.status(200).json({
+          data:[genesisblock]
+        });
+        await Blockchain.updateOne( {_id:blockchain_id},
+        { $set: { blockchain: [genesisblock] } })
+      }
+      else
+      {
+        res.status(400).json({
+          message:'user not found',
+        });
+      }
+  })
+})
+
+
+
 //authenticate user
 router.post('/authenticate', function(req, res, next) {
   const{email,password}=req.body;
-
   User.findOne({ email: email }).then(doc=>{
     if(doc)
     {
@@ -124,7 +111,7 @@ router.post('/authenticate', function(req, res, next) {
       if(bcrypt.compareSync(password,userpassword))
         {
           
-          res.status(200).json({message:'Authentication Successful',data:{
+          res.json({message:'Authentication Successful',data:{
           user:{
             name:doc.name,
             email:doc.email
@@ -208,7 +195,6 @@ router.post('/blockchain', function(req, res) {
     
     }
   }).catch((err)=>{
-    console.log(err)
     res.status(400).json({err:err,message:'Empty blockchain'});
   })
 

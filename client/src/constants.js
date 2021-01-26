@@ -5,5 +5,5 @@ export const ADDBLOCK='addblock';
 export const MUTATECHAIN='mutatechain';
 export const INITSTATE="initstate";
 export const ADJUSTHASH='adjusthash';
-export const SERVER='http://blockchainimp.herokuapp.com';
-export const LOGOURL='https://blockchaindemo.io/static/media/logo.8e798550.png'
+export const SERVER='https://blockchainimp.herokuapp.com';
+export const LOGOURL='https://blockchaindemo.io/static/media/logo.8e798550.png';

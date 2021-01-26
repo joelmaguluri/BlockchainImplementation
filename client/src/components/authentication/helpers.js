@@ -11,7 +11,9 @@ export const authenticateUser=async(email,password)=>{
       },
       body: JSON.stringify(data), // body data type must match "Content-Type" header
     });
+  
     response = await response.json();
+
     if(response.error)
       {
         return {error:response.error}
@@ -30,6 +32,9 @@ export const fetchBlockchain=async(email)=>{
     let response = await fetch(url, {
       method: "GET",
       mode: "cors", // no-cors, *cors, same-origin
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
 
     response = await response.json();

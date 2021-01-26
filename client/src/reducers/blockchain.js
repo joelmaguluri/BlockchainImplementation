@@ -59,7 +59,6 @@ const BlockchainReducer = (state = {chain:[]}, action) => {
 
         }
     case ADJUSTHASH:{
-        console.log(ADJUSTHASH);
         let {chain}=state;
         const {index,hash,nonce}=action.payload;
         chain[index]={...chain[index],hash:hash,nonce:nonce,status:'valid'};
