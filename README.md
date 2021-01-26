@@ -74,10 +74,11 @@ now copy the app name and create tag
 ```sh
 docker tag ${imagename}  registry.heroku.com/${appname}/web
 ```
-now push to Container Registry
+now push the image to registry
 ```sh
-heroku container:push web
+docker push registry.heroku.com/${appname}/web
 ```
+  
 Then release the image to your app
 ```sh
 heroku container:release web
